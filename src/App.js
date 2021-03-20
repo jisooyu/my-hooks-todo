@@ -1,25 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
+
+const todosReducer = (state, action) => {
+  switch (action.type) {
+    case "POPULATE_TODOS":
+      return action.todos;
+    case "ADD_TODO":
+      return [
+        ...state,
+        {
+          title: action.title,
+          body: action.body,
+        },
+      ];
+    case "REMOVE_TODO":
+      return state.filter((todo) => todo.title !== action.title);
+    default:
+      return state;
+  }
+};
 
 const TodoApp = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, dispatch] = useReducer(todosReducer, []);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
   const addTodo = (e) => {
     e.preventDefault();
-    setTodos([...todos, { title, body }]);
+    dispatch({
+      type: "ADD_TODO",
+      title,
+      body,
+    });
     setTitle("");
     setBody("");
   };
 
   const removeTodo = (title) => {
-    setTodos(todos.filter((todo) => todo.title !== title));
+    dispatch({ type: "REMOVE_TODO", title });
   };
 
   useEffect(() => {
-    const todosData = JSON.parse(localStorage.getItem("todos"));
-    if (todosData) {
-      setTodos(todosData);
+    const todos = JSON.parse(localStorage.getItem("todos"));
+    if (todos) {
+      dispatch({ type: "POPULATE_TODOS", todos });
     }
   }, []);
 

@@ -1,3 +1,6 @@
+# Reference
+ Youtube의 Slow Coding - React Hooks Todo - Revisited에 강의되는 코드를 여기에 저장해 놓은 것임.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
